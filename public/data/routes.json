@@ -1,0 +1,22 @@
+[
+  {
+    "id": "test",
+    "path": "/test",
+    "blocks": [
+      {
+        "id": "block1",
+        "type": "text",
+        "data": {
+          "content": "This is a test"
+        }
+      },
+      {
+        "id": "block2",
+        "type": "youtube",
+        "data": {
+          "videoId": "M7lc1UVf-VE"
+        }
+      }
+    ]
+  }
+]
