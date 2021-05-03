@@ -1,4 +1,5 @@
 {% cache "text_cache" ~ id %}
-    <h1>Text section</h1>
-    <p>{{ content }}</p>
+    <section class="block" style="{{ blockStyles }}">
+        <p>{{ content }}</p>
+    </section>
 {% endcache %}

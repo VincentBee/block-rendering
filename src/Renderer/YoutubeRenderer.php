@@ -4,24 +4,56 @@ declare(strict_types=1);
 
 namespace App\Renderer;
 
-use Twig\Environment;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class YoutubeRenderer implements RendererInterface
+/**
+ * Class YoutubeRenderer
+ *
+ * Render an embedded youtube video.
+ *
+ * @package App\Renderer
+ */
+class YoutubeRenderer extends AbstractRenderer
 {
-    private $twig;
-
-    public function __construct(Environment $twig)
+    /**
+     * @inheritDoc
+     */
+    public function renderWithResolvedPayload(array $payload): string
     {
-        $this->twig = $twig;
+        try {
+            return $this->twig->render('blocks/youtube.html.twig', $payload);
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
-    public function render(array $payload): string
-    {
-        return $this->twig->render('blocks/youtube.html.twig', $payload);
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function getType(): string
     {
         return 'youtube';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setRequired([
+            'id',
+            'videoId'
+        ]);
+
+        $resolver->setDefaults([
+            'title' => 'default title',
+            'background' => 'pink',
+            'blockStyles' => null,
+        ]);
+
+        $resolver->setNormalizer('blockStyles', function(Options $options) {
+            return "background: ${options['background']}";
+        });
     }
 }

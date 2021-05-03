@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <header>
+        <h1>Classical title</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li>Lorem ipsum</li>
+            <li>Lorem ipsum</li>
+            <li>Lorem ipsum</li>
+        </ul>
+    </nav>
+
+    <div class="main">
+        {% for block in blocks %}
+            {{ block | render_block }}
+        {% endfor %}
+    </div>
+
+    <footer>
+        Copyright
+    </footer>
+{% endblock %}

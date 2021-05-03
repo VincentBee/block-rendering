@@ -2,6 +2,7 @@
   {
     "id": "test",
     "path": "/test",
+    "type": "classical",
     "blocks": [
       {
         "id": "block1",
@@ -14,7 +15,37 @@
         "id": "block2",
         "type": "youtube",
         "data": {
+          "title": "first YT video",
           "videoId": "M7lc1UVf-VE"
+        }
+      },
+      {
+        "id": "block3",
+        "type": "youtube",
+        "data": {
+          "title": "second YT video",
+          "videoId": "eQwglp76NPw"
+        }
+      }
+    ]
+  },
+  {
+    "id": "test-standalone",
+    "path": "/test-standalone",
+    "type": "standalone",
+    "blocks": [
+      {
+        "id": "block1",
+        "type": "text",
+        "data": {
+          "content": "This is a test"
+        }
+      },
+      {
+        "id": "block4",
+        "type": "text",
+        "data": {
+          "content": "This is another text"
         }
       }
     ]

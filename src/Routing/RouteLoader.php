@@ -8,6 +8,10 @@ use App\HttpClient\RouteConfiguration;
 use Symfony\Bundle\FrameworkBundle\Routing\RouteLoaderInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class RouteLoader implements RouteLoaderInterface
 {
@@ -17,6 +21,19 @@ class RouteLoader implements RouteLoaderInterface
     private $routeConfiguration;
 
     /**
+     * @var string[]
+     */
+    private $controllerMap = [
+        'classical' => 'App\Controller\GeneralController::classical',
+        'standalone' => 'App\Controller\GeneralController::standalone',
+    ];
+
+    /**
+     * @var string
+     */
+    private $defaultController;
+
+    /**
      * RouteLoader constructor.
      * @param RouteConfiguration $routeConfiguration
      */
@@ -24,10 +41,15 @@ class RouteLoader implements RouteLoaderInterface
         RouteConfiguration $routeConfiguration
     ) {
         $this->routeConfiguration = $routeConfiguration;
+        $this->defaultController = $this->controllerMap['classical'];
     }
 
     /**
      * @return RouteCollection
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function loadRoutes(): RouteCollection
     {
@@ -36,7 +58,7 @@ class RouteLoader implements RouteLoaderInterface
         foreach ($this->routeConfiguration->fetch() as $routeConfiguration) {
             $routeIdentifier = $routeConfiguration['id'];
             $routes->add("custom_$routeIdentifier", new Route($routeConfiguration['path'], [
-                '_controller' => 'App\Controller\GeneralController::index',
+                '_controller' => $this->controllerMap[$routeConfiguration['type']]?: $this->defaultController,
                 'blocks' => $routeConfiguration['blocks']
             ]));
         }

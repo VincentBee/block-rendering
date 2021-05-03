@@ -7,27 +7,44 @@ namespace App\Renderer;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
+/**
+ * Class RenderExtension
+ * @package App\Renderer
+ */
 class RenderExtension extends AbstractExtension
 {
+    /**
+     * @var RendererProvider
+     */
     private $rendererProvider;
 
+    /**
+     * Constructor.
+     *
+     * @param RendererProvider $rendererProvider
+     */
     public function __construct(
         RendererProvider $rendererProvider
     ) {
         $this->rendererProvider = $rendererProvider;
     }
 
-    public function getFilters()
+    /**
+     * @return TwigFilter[]
+     */
+    public function getFilters(): array
     {
         return [
             new TwigFilter('render_block', [$this, 'render'], ['is_safe' => ['html']]),
         ];
     }
 
-    public function render($block)
+    /**
+     * @param $block
+     * @return string
+     */
+    public function render($block): string
     {
-        return $this->rendererProvider->get($block['type'])->render(array_merge($block['data'], [
-            'id' => $block['id']
-        ]));
+        return $this->rendererProvider->get($block['type'])->render($block['id'], $block['data']);
     }
 }

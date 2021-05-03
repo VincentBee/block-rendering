@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="standalone">
+        {% for block in blocks %}
+            {{ block | render_block }}
+        {% endfor %}
+    </div>
+{% endblock %}
